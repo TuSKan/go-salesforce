@@ -17,7 +17,7 @@ type queryResponse struct {
 	Records        []map[string]any `json:"records"`
 }
 
-func performQuery(auth *authentication, query string, sObject any) error {
+func performQuery(sf *Salesforce, query string, sObject any) error {
 	query = url.QueryEscape(query)
 	queryResp := &queryResponse{
 		Done:           false,
@@ -25,10 +25,11 @@ func performQuery(auth *authentication, query string, sObject any) error {
 	}
 
 	for !queryResp.Done {
-		resp, err := doRequest(auth, requestPayload{
-			method:  http.MethodGet,
-			uri:     queryResp.NextRecordsUrl,
-			content: jsonType,
+		resp, err := doRequest(sf.auth, sf.config, requestPayload{
+			method:   http.MethodGet,
+			uri:      queryResp.NextRecordsUrl,
+			content:  jsonType,
+			compress: sf.config.compressionHeaders,
 		})
 		if err != nil {
 			return err
@@ -49,7 +50,10 @@ func performQuery(auth *authentication, query string, sObject any) error {
 		queryResp.Records = append(queryResp.Records, tempQueryResp.Records...)
 		queryResp.Done = tempQueryResp.Done
 		if !tempQueryResp.Done && tempQueryResp.NextRecordsUrl != "" {
-			queryResp.NextRecordsUrl = strings.TrimPrefix(tempQueryResp.NextRecordsUrl, "/services/data/"+apiVersion)
+			queryResp.NextRecordsUrl = strings.TrimPrefix(
+				tempQueryResp.NextRecordsUrl,
+				"/services/data/"+apiVersion,
+			)
 		}
 	}
 
