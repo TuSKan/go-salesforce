@@ -22,11 +22,11 @@ type ExplainPlain struct {
 	SObjectType          string `json:"sobjectType"`
 }
 
-func performExplain(auth *authentication, query string) ([]ExplainPlain, error) {
+func performExplain(auth *authentication, config *configuration, query string) ([]ExplainPlain, error) {
 	query = url.QueryEscape(query)
 
 	explainURL := "/query/?explain=" + query
-	resp, err := doRequest(auth, requestPayload{
+	resp, err := doRequest(auth, config, requestPayload{
 		method:  http.MethodGet,
 		uri:     explainURL,
 		content: jsonType,

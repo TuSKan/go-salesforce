@@ -301,7 +301,7 @@ func (sf *Salesforce) QueryExplain(query string) ([]ExplainPlain, error) {
 		return nil, authErr
 	}
 
-	explainResp, queryErr := performExplain(sf.auth, query)
+	explainResp, queryErr := performExplain(sf.auth, sf.config, query)
 	if queryErr != nil {
 		return nil, queryErr
 	}
