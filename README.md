@@ -89,6 +89,17 @@ type BulkJobResults struct {
 }
 ```
 
+### Salesforce tag
+
+- tag struct fields with the `salesforce` tag to decode them into their Salesforce API field names
+
+```go
+type Account struct {
+    ExternalID string `salesforce:"ExternalId__c"`
+    Name       string
+}
+```
+
 ## Authentication
 
 - To begin using, create an instance of the `Salesforce` type by calling `salesforce.Init()` and passing your credentials as arguments
@@ -305,6 +316,24 @@ type Contact struct {
 
 contacts := []Contact{}
 sf.Query("SELECT Id, Account.Name FROM Contact", &contacts)
+```
+
+## DML
+
+Note that any DML operation that includes an uninitialized struct field, or 0 or null value, will effectively be treated as passing a null value to Salesforce.
+
+```go
+type Contact struct {
+    Id        string
+    LastName  string
+    FirstName string
+}
+
+contact := Contact{
+    Id:       "003Dn00000pEYQSIA4",
+    LastName: "Banner",
+}
+err = sf.UpdateOne("Contact", contact) // will update the FirstName of the contact to an empty string ""
 ```
 
 ## SObject Single Record Operations
