@@ -1018,7 +1018,7 @@ func Test_mapstructureDecode_StringToTime(t *testing.T) {
 	}
 
 	var output TestStruct
-	err := mapstructureDecode(input, &output)
+	err := mapstructureDecode(input, &output, "salesforce")
 
 	if err != nil {
 		t.Fatalf("mapstructureDecode failed: %v", err)
