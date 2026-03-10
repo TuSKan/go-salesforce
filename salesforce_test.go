@@ -916,15 +916,13 @@ func TestSalesforce_QueryExplain(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sf := &Salesforce{
-				auth: tt.fields.auth,
-			}
+			sf := buildSalesforceStruct(tt.fields.auth)
 			res, err := sf.QueryExplain(tt.args.query)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Salesforce.Query() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if !reflect.DeepEqual(res, tt.want) {
-				t.Errorf("Salesforce.QueryExplain() = %v, want %v", &resp, tt.want)
+				t.Errorf("Salesforce.QueryExplain() = %v, want %v", res, tt.want)
 			}
 		})
 	}
@@ -3721,7 +3719,7 @@ func TestSalesforce_CreateQueryBulkJob(t *testing.T) {
 	}
 
 	type data struct {
-		Col string `salesforce:"col"`
+		Col string `csv:"col"`
 	}
 
 	type args struct {
