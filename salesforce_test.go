@@ -3719,7 +3719,7 @@ func TestSalesforce_CreateQueryBulkJob(t *testing.T) {
 	}
 
 	type data struct {
-		Col string `csv:"col"`
+		Col string `salesforce:"col"`
 	}
 
 	type args struct {

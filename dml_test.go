@@ -47,7 +47,7 @@ func Test_convertToMap(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := convertToMap(tt.args.obj)
+			got, err := convertToMap(tt.args.obj, "salesforce")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("convertToMap() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -106,7 +106,7 @@ func Test_convertToSliceOfMaps(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := convertToSliceOfMaps(tt.args.obj)
+			got, err := convertToSliceOfMaps(tt.args.obj, "salesforce")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("convertToSliceOfMaps() error = %v, wantErr %v", err, tt.wantErr)
 				return
